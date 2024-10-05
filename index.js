@@ -16,7 +16,7 @@ import { initialData } from './initialData.js';
 // Function checks if local storage already has data, if not it loads initialData to localStorage
 function initializeData() {
   if (!localStorage.getItem('tasks')) {
-    localStorage.setItem('tasks', JSON.stringify(initialData)); 
+    localStorage.setItem('tasks', JSON.stringify(initialData));
     localStorage.setItem('showSideBar', 'true')
   } else {
     console.log('Data already exists in localStorage');
@@ -25,7 +25,27 @@ function initializeData() {
 
 // TASK: Get elements from the DOM
 const elements = {
-
+  headerBoardName: document.getElementById("header-board-name"),
+  columnDivs: document.querySelectorAll(".column-div"),
+  sideBarContainer: document.getElementById("side-bar-div"),
+  hideSideBarBtn: document.getElementById("hide-side-bar-btn"),
+  showSideBarBtn: document.getElementById("show-side-bar-btn"),
+  themeSwitch: document.getElementById("switch"),
+  createNewTaskBtn: document.getElementById("add-new-task-btn"),
+  modalWindow: document.getElementById("new-task-modal-window"),
+  editTaskModal: document.querySelector(".edit-task-modal-window"),
+  filterDiv: document.getElementById("filterDiv"),
+  MainLogo: document.getElementById("logo"),
+  title: document.getElementById("title-input"),
+  description: document.getElementById("desc-input"),
+  Status: document.getElementById("select-status"),
+  editTaskTitleInput: document.getElementById("edit-task-title-input"),
+  editTaskDescInput: document.getElementById("edit-task-desc-input"),
+  editSelectStatus: document.getElementById("edit-select-status"),
+  editTaskModalWindow: document.querySelector(".edit-task-modal-window"),
+  confirmDeleteModal: document.getElementById("confirm-delete-modal"),
+  confirmDeleteBtn: document.getElementById("confirm-delete-btn"),
+  cancelDeleteBtn: document.getElementById("cancel-delete-btn")
 }
 
 let activeBoard = ""

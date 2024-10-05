@@ -274,10 +274,11 @@ function openEditTaskModal(task) {
 
   // Call saveTaskChanges upon click of Save Changes button
   // elements.saveTaskChangesBtn.addEventListener('click', () => {
-  //   saveTaskChanges(task.id);
+  //   saveTaskChanges(task.id); // Pass the task ID to the saveTaskChanges function
   //   toggleModal(false, elements.editTaskModal);
   //   refreshTasksUI();
   // });
+
  
 
   // Delete task using a helper function and close the task modal
@@ -301,10 +302,8 @@ function saveTaskChanges(taskId) {
     board: activeBoard // Assuming the active board is the one being edited
   };
 
-
-  // Update task using a hlper functoin
+  // Update task using a helper function
   putTask(updatedTask);
- 
 
   // Close the modal and refresh the UI to reflect the changes
   toggleModal(false, elements.editTaskModalWindow);

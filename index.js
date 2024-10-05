@@ -128,15 +128,16 @@ function refreshTasksUI() {
 // Styles the active board by adding an active class
 // TASK: Fix Bugs
 function styleActiveBoard(boardName) {
-  document.querySelectorAll('.board-btn').forEach(btn => { 
-    if(btn.textContent === boardName) {
-      btn.classList.add('active') 
+  document.querySelectorAll('.board-btn').forEach(btn => {
+    if (btn.textContent === boardName) {
+      btn. ariaPressed = true;
+      btn.classList.add('active')
     } else {
-      btn.classList.remove('active'); 
+      btn.ariaPressed = false;
+      btn.classList.remove('active');
     }
   });
 }
-
 
 function addTaskToUI(task) {
   const column = document.querySelector(`.column-div[data-status="${task.status}"]`); 

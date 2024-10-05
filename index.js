@@ -77,9 +77,9 @@ function displayBoards(boards) {
     boardElement.addEventListener("click", () => {
       elements.headerBoardName.textContent = board;
       filterAndDisplayTasksByBoard(board);
-      activeBoard = board //assigns active board
-      localStorage.setItem("activeBoard", JSON.stringify(activeBoard))
-      styleActiveBoard(activeBoard)
+      activeBoard = board; // assigns active board
+      localStorage.setItem("activeBoard", JSON.stringify(activeBoard));
+      styleActiveBoard(activeBoard);
     });
     boardsContainer.appendChild(boardElement);
   });

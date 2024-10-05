@@ -39,13 +39,17 @@ const elements = {
   title: document.getElementById("title-input"),
   description: document.getElementById("desc-input"),
   Status: document.getElementById("select-status"),
-  editTaskTitleInput: document.getElementById("edit-task-title-input"),
+  edit: document.getElementById("edit-task-title-input"),
   editTaskDescInput: document.getElementById("edit-task-desc-input"),
   editSelectStatus: document.getElementById("edit-select-status"),
   editTaskModalWindow: document.querySelector(".edit-task-modal-window"),
   confirmDeleteModal: document.getElementById("confirm-delete-modal"),
   confirmDeleteBtn: document.getElementById("confirm-delete-btn"),
-  cancelDeleteBtn: document.getElementById("cancel-delete-btn")
+  cancelDeleteBtn: document.getElementById("cancel-delete-btn"),
+  saveTaskChangesBtn: document.getElementById('save-edit-btn'),
+  deleteTaskBtn: document.getElementById('delete-task-btn'),
+  cancelEditBtn:document.getElementById('cancel-edit-btn')
+
 }
 
 let activeBoard = ""
@@ -216,6 +220,10 @@ function addTask(event) {
 
   //Assign user input to the task object
     const task = {
+      title: elements.title.value,
+      description: elements.description.value,
+      status: elements.Status.value,
+      board: activeBoard
       
     };
     const newTask = createNewTask(task);
@@ -230,42 +238,76 @@ function addTask(event) {
 
 
 function toggleSidebar(show) {
- 
+  elements.sideBarContainer.style.display = show ? 'block' : 'none';
+  elements.hideSideBarBtn.style.display = show? 'block' : 'none';
+  elements.showSideBarBtn.style.display = show? 'none' : 'block';
+  elements.hideSideBarBtn.classList.toggle('active'); // Add/remove active class to hide sidebar button
+  elements.showSideBarBtn.classList.toggle('active'); // Add/remove active class to show sidebar button
+  elements.sideBarContainer.classList.toggle('active'); // Add/remove active class to sidebar container
+  elements.mainContent.classList.toggle('active'); // Add/remove active class to main content container
+  elements.filterDiv.style.display = 'none'; // Also hide the filter overlay
+  elements.filterDiv.style.display = show? 'none' : 'block'; // Also hide the filter overlay
+  localStorage.setItem('showSideBar', show);
+
 }
 
 function toggleTheme() {
- 
+  document.body.classList.toggle("light-theme");
+  document.body.classList.toggle("dark-theme");
+  const lightTheme = document.body.classList.contains("light-theme");
+  elements.themeSwitch.checked = lightTheme;
+  localStorage.setItem("theme", lightTheme ? "light" : "dark");
+  localStorage.setItem("light-theme", lightTheme ? "enabled" : "disabled");
 }
 
 
 
 function openEditTaskModal(task) {
   // Set task details in modal inputs
+  elements.edit.value = task.title;
+  elements.editTaskDescInput.value = task.description;
+  elements.editSelectStatus.value = task.status;
   
 
-  // Get button elements from the task modal
+  // Get button elements from the task modal(This was already done above)
 
 
   // Call saveTaskChanges upon click of Save Changes button
+  // elements.saveTaskChangesBtn.addEventListener('click', () => {
+  //   saveTaskChanges(task.id);
+  //   toggleModal(false, elements.editTaskModal);
+  //   refreshTasksUI();
+  // });
  
 
   // Delete task using a helper function and close the task modal
+  elements.deleteTaskBtn.addEventListener('click', () => {
+    deleteTask(task.id);
+    toggleModal(false, elements.editTaskModal);
+    refreshTasksUI();
+  });
 
 
   toggleModal(true, elements.editTaskModal); // Show the edit task modal
 }
 
 function saveTaskChanges(taskId) {
-  // Get new user inputs
-  
-
-  // Create an object with the updated task details
+  //Get new user inputs
+  const updatedTask = {
+    id: taskId,
+    title: elements.edit.value,
+    description: elements.editTaskDescInput.value,
+    status: elements.editSelectStatus.value,
+    board: activeBoard // Assuming the active board is the one being edited
+  };
 
 
   // Update task using a hlper functoin
+  putTask(updatedTask);
  
 
   // Close the modal and refresh the UI to reflect the changes
+  toggleModal(false, elements.editTaskModalWindow);
 
   refreshTasksUI();
 }
@@ -277,10 +319,18 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function init() {
+  initializeData();
+  fetchAndDisplayBoardsAndTasks();
+  styleActiveBoard();
   setupEventListeners();
+  setupEventListeners();
+  toggleModal();
+  toggleSidebar();
+  toggleTheme();
+  openEditTaskModal();
+  saveTaskChanges();
   const showSidebar = localStorage.getItem('showSideBar') === 'true';
   toggleSidebar(showSidebar);
   const isLightTheme = localStorage.getItem('light-theme') === 'enabled';
   document.body.classList.toggle('light-theme', isLightTheme);
-  fetchAndDisplayBoardsAndTasks(); // Initial display of boards and tasks
 }
